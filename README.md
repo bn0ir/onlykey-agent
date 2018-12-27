@@ -104,4 +104,18 @@ $ onlykey-agent -c user@example.com -e ed25519
 
 You can also just type `-e e` instead of typing out the full `-e ed25519`
 
+### Use default key
+
+You can use single key for any user / host combination with flag `-d`:
+
+1) Generate default public key using onlykey-agent
+```
+$ onlykey-agent -d default
+```
+
+2) Log in using default public key
+```
+$ onlykey-agent -d -c user@example.com
+```
+
 The project started from a fork [trezor-agent](https://github.com/romanz/trezor-agent) (thanks!).
