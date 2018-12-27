@@ -32,6 +32,8 @@ def create_parser():
 
     curve_names = [name for name in formats.SUPPORTED_CURVES]
     curve_names = ', '.join(sorted(curve_names))
+    p.add_argument('-d', '--defaultkey', default=False, action='store_true',
+                   help='use default key for SSH agent')
     p.add_argument('-e', '--ecdsa-curve-name', metavar='CURVE',
                    default=formats.CURVE_NIST256,
                    help='specify ECDSA curve name: ' + curve_names)
@@ -137,7 +139,10 @@ def run_agent(client_factory=client.Client):
         label = args.identity
         command = args.command
 
-        public_key = conn.get_public_key(label=label)
+        if args.defaultkey:
+            public_key = conn.get_public_key(label="default")
+        else:
+            public_key = conn.get_public_key(label=label)
 
         if args.connect:
             command = ssh_args(label) + args.command
@@ -169,7 +174,10 @@ def run_git(client_factory=client.Client):
                       args.remote)
             return
 
-        public_key = conn.get_public_key(label=label)
+        if args.defaultkey:
+            public_key = conn.get_public_key(label="default")
+        else:
+            public_key = conn.get_public_key(label=label)
 
         if not args.test:
             if args.command:
